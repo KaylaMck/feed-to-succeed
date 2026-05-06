@@ -4,6 +4,7 @@ import polars as pl
 import requests
 from dotenv import load_dotenv
 from loguru import logger
+from snowflake.connector import connect
 
 load_dotenv()
 
@@ -47,6 +48,48 @@ def fetch_census_data():
 
     return census
 
+def load_to_snowflake(census: pl.DataFrame) -> None:
+    logger.info("Connecting to Snowflake...")
+
+    conn = connect(
+        account=os.getenv("SNOWFLAKE_ACCOUNT"),
+        user=os.getenv("SNOWFLAKE_USER"),
+        password=os.getenv("SNOWFLAKE_PASSWORD"),
+        database=os.getenv("SNOWFLAKE_DATABASE"),
+        schema=os.getenv("SNOWFLAKE_SCHEMA"),
+        warehouse=os.getenv("SNOWFLAKE_WAREHOUSE"),
+        role=os.getenv("SNOWFLAKE_ROLE")
+    )
+
+    cursor = conn.cursor()
+
+    logger.info("Creating table if not exists...")
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS raw.census_acs (
+            B17001_001E STRING,
+            B17001_002E STRING,
+            B01003_001E STRING,
+            B03002_003E STRING,
+            B03002_004E STRING,
+            B03002_012E STRING,
+            state STRING
+        )
+    """)
+
+    rows = census.rows()
+    cursor.executemany(
+        "INSERT INTO raw.census_acs VALUES (%s, %s, %s, %s, %s, %s, %s)",
+        rows
+    )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    logger.info(f"Successfully loaded {len(census)} rows into Snowflake")
+
 if __name__ == "__main__":
     census_data = fetch_census_data()
     print(census_data.head())
+    load_to_snowflake(census_data)
