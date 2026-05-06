@@ -8,3 +8,14 @@ dependencies = [
     "python-dotenv>=1.2.2",
     "snowflake-connector-python>=4.4.0",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.12",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "N", "UP", "B", "S", "SIM", "RUF", "T20"]
