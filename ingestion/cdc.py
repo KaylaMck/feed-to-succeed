@@ -92,6 +92,4 @@ def load_to_snowflake(cdc_data: pl.DataFrame) -> None:
 
 if __name__ == "__main__":
     cdc_data = fetch_cdc_data()
-    print(cdc_data.head())
-    print(cdc_data.columns)
     load_to_snowflake(cdc_data)

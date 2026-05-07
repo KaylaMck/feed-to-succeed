@@ -93,9 +93,7 @@ def load_to_snowflake(nces_data: pl.DataFrame, table_name: str) -> None:
 
 if __name__ == "__main__":
     math_data = fetch_nces_data(MATH_PARAMS, "mathematics")
-    print(math_data.head())
     load_to_snowflake(math_data, "nces_math")
 
     reading_data = fetch_nces_data(READING_PARAMS, "reading")
-    print(reading_data.head())
     load_to_snowflake(reading_data, "nces_reading")
