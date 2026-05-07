@@ -42,11 +42,11 @@ def fetch_census_data():
     headers = data[0]
     rows = data[1:]
 
-    census = pl.DataFrame(rows, schema=headers, orient="row")
+    census_data = pl.DataFrame(rows, schema=headers, orient="row")
 
-    logger.info(f"Successfully fetched {len(census)} rows from Census ACS API")
+    logger.info(f"Successfully fetched {len(census_data)} rows from Census ACS API")
 
-    return census
+    return census_data
 
 def load_to_snowflake(census: pl.DataFrame) -> None:
     logger.info("Connecting to Snowflake...")
@@ -77,6 +77,12 @@ def load_to_snowflake(census: pl.DataFrame) -> None:
         )
     """)
 
+    logger.info("Truncating existing data in raw.census_acs...")
+
+    cursor.execute("TRUNCATE TABLE raw.census_acs")
+
+    logger.info("Inserting new data into raw.census_acs...")
+    
     rows = census.rows()
     cursor.executemany(
         "INSERT INTO raw.census_acs VALUES (%s, %s, %s, %s, %s, %s, %s)",
@@ -91,5 +97,4 @@ def load_to_snowflake(census: pl.DataFrame) -> None:
 
 if __name__ == "__main__":
     census_data = fetch_census_data()
-    print(census_data.head())
     load_to_snowflake(census_data)
