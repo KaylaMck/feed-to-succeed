@@ -1,0 +1,13 @@
+version 2:
+
+sources:
+  - name: raw
+    database: feed_to_succeed
+    schema: raw
+    tables:
+      - name: census_acs
+      - name: nslp_participation
+      - name: sbp_participation
+      - name: cdc_data
+      - name: nces_math
+      - name: nces_reading
