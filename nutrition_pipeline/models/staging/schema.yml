@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: stg_census_acs
+    description: "Staged Census ACS data with poverty and demographic metrics by state"
+    columns:
+      - name: state_fips
+        description: "State FIPS code"
+        tests:
+          - not_null
+          - unique
+      - name: total_population
+        description: "Total state population"
+        tests:
+          - not_null
+      - name: poverty_population_evaluated
+        description: "Total population evaluated for poverty status"
+        tests:
+          - not_null
+      - name: below_poverty_population
+        description: "Population below poverty line"
+        tests:
+          - not_null
+
+  - name: stg_nslp_participation
+    description: "Staged USDA National School Lunch Program participation by state"
+    columns:
+      - name: state_name
+        description: "State name"
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_sbp_participation
+    description: "Staged USDA School Breakfast Program participation by state"
+    columns:
+      - name: state_name
+        description: "State name"
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_cdc_data
+    description: "Staged CDC nutrition, physical activity, and obesity data by state"
+    columns:
+      - name: state_abbr
+        description: "State abbreviation"
+        tests:
+          - not_null
+      - name: data_value
+        description: "The reported data value"
+
+  - name: stg_nces_math
+    description: "Staged NCES 8th grade math scores by state"
+    columns:
+      - name: state_abbr
+        description: "State abbreviation"
+        tests:
+          - not_null
+      - name: avg_score
+        description: "Average 8th grade math score"
+        tests:
+          - not_null
+
+  - name: stg_nces_reading
+    description: "Staged NCES 8th grade reading scores by state"
+    columns:
+      - name: state_abbr
+        description: "State abbreviation"
+        tests:
+          - not_null
+      - name: avg_score
+        description: "Average 8th grade reading score"
+        tests:
+          - not_null
