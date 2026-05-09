@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: int_state_demographics
+    description: "State-level demographic and poverty metrics calculated from Census ACS data"
+    columns:
+      - name: state_fips
+        description: "State FIPS code"
+        tests:
+          - not_null
+          - unique
+      - name: poverty_rate
+        description: "Percentage of evaluated population below poverty line"
+        tests:
+          - not_null
+      - name: total_population
+        description: "Total state population"
+        tests:
+          - not_null
+
+  - name: int_state_nutrition
+    description: "Combined NSLP and SBP school meal participation by state"
+    columns:
+      - name: state_name
+        description: "State name"
+        tests:
+          - not_null
+          - unique
+      - name: nslp_participation_2024
+        description: "NSLP average daily participation in FY 2024"
+      - name: sbp_participation_2024
+        description: "SBP average daily participation in FY 2024"
+
+  - name: int_state_health
+    description: "Filtered CDC health metrics for obesity, physical activity, and nutrition by state"
+    columns:
+      - name: state_abbr
+        description: "State abbreviation"
+        tests:
+          - not_null
+      - name: data_value
+        description: "The reported health metric value"
+      - name: year
+        description: "Survey year"
+        tests:
+          - not_null
+
+  - name: int_state_academic
+    description: "Combined NCES 8th grade math and reading scores by state and year"
+    columns:
+      - name: state_abbr
+        description: "State abbreviation"
+        tests:
+          - not_null
+      - name: year
+        description: "Assessment year"
+        tests:
+          - not_null
+      - name: math_avg_score
+        description: "Average 8th grade math score"
+      - name: reading_avg_score
+        description: "Average 8th grade reading score"
