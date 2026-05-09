@@ -41,3 +41,7 @@ models:
     marts:
       +materialized: table
       +schema: marts
+
+seeds:
+  nutrition_pipeline:
+    +schema: staging

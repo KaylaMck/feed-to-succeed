@@ -1,5 +1,5 @@
 with cdc as (
-    select * from {{ ref('stg_cdc')}}
+    select * from {{ ref('stg_cdc_data')}}
 ),
 
 filtered as (

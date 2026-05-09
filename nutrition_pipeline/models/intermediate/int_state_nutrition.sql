@@ -1,9 +1,9 @@
 with nslp as (
-    select * from {{ ref('stg_nslp') }}
+    select * from {{ ref('stg_nslp_participation') }}
 ),
 
 sbp as (
-    select * from {{ ref('stg_sbp') }}
+    select * from {{ ref('stg_sbp_participation') }}
 ),
 
 joined as (
