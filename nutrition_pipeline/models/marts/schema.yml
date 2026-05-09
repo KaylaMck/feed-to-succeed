@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: mart_state_nutrition_overview
+    description: "State-level school meal participation rates with demographic context"
+    columns:
+      - name: state_name
+        description: "Full state name"
+        tests:
+          - not_null
+          - unique
+      - name: state_abbr
+        description: "State abbreviation"
+        tests:
+          - not_null
+      - name: nslp_participation_rate
+        description: "NSLP participation as percentage of total population"
+      - name: sbp_participation_rate
+        description: "SBP participation as percentage of total population"
+      - name: poverty_rate
+        description: "Percentage of population below poverty line"
+
+  - name: mart_nutrition_vs_health
+    description: "School meal participation rates compared to student obesity and physical activity rates"
+    columns:
+      - name: state_name
+        description: "Full state name"
+        tests:
+          - not_null
+      - name: obesity_rate
+        description: "Percentage of students with obesity"
+      - name: physical_activity_rate
+        description: "Percentage of students meeting physical activity guidelines"
+
+  - name: mart_nutrition_vs_academics
+    description: "School meal participation rates compared to state academic performance"
+    columns:
+      - name: state_name
+        description: "Full state name"
+        tests:
+          - not_null
+      - name: math_avg_score
+        description: "Average 8th grade math score"
+      - name: reading_avg_score
+        description: "Average 8th grade reading score"
+
+  - name: mart_tennessee_spotlight
+    description: "Tennessee compared to neighboring states across nutrition, health, and academic metrics"
+    columns:
+      - name: state_name
+        description: "Full state name"
+        tests:
+          - not_null
+      - name: state_abbr
+        description: "State abbreviation"
+        tests:
+          - not_null

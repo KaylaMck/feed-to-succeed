@@ -14,7 +14,7 @@ renamed as (
         cast("isStatDisplayable" as integer)    as is_displayable,
         cast("errorFlag" as integer)            as error_flag
     from source
-    where "varValueLabel" = 'All Students'
+    where "varValueLabel" = 'All students'
     and "isStatDisplayable" = '1'
     and "errorFlag" = '0'
 )

@@ -18,9 +18,10 @@ filtered as (
         stratification
     from cdc
     where topic in (
-        'Obesity / Weight Status',
-        'Physical Activity',
-        'Fruits and Vegetables'
+    'Obesity / Weight Status',
+    'Physical Activity - Behavior',
+    'Fruits and Vegetables - Behavior',
+    'Sugar Drinks - Behavior'
     )
     and stratification = 'Total'
 )

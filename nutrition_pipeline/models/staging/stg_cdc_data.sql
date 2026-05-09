@@ -18,7 +18,7 @@ renamed as (
         "stratificationcategory1"                   as stratification_category,
         "stratification1"                           as stratification
     from source
-    where "datasource" = 'YRBSS'
+    where "datasource" = 'Youth Risk Behavior Surveillance System'
     and "locationabbr" != 'US'
 )
 
