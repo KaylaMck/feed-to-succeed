@@ -10,6 +10,7 @@ load_dotenv()
 
 BASE_URL = "https://chronicdata.cdc.gov/resource/vba9-s8jp.json"
 
+
 def fetch_cdc_data() -> pl.DataFrame:
     logger.info("Starting CDC Data Fetch...")
 
@@ -41,6 +42,7 @@ def fetch_cdc_data() -> pl.DataFrame:
 
     return cdc_data
 
+
 def load_to_snowflake(cdc_data: pl.DataFrame) -> None:
     logger.info("Connecting to Snowflake...")
 
@@ -63,7 +65,7 @@ def load_to_snowflake(cdc_data: pl.DataFrame) -> None:
         CREATE TABLE IF NOT EXISTS raw.cdc_data (
             {columns}
         )
-     """)
+    """)
 
     logger.info("Truncating existing data in raw.cdc_data...")
     cursor.execute("TRUNCATE TABLE raw.cdc_data")
@@ -77,7 +79,6 @@ def load_to_snowflake(cdc_data: pl.DataFrame) -> None:
     rows = cdc_data.rows()
 
     logger.info(f"Inserting {len(cdc_data)} rows into Snowflake...")
-
     cursor.executemany(
         f"INSERT INTO raw.cdc_data VALUES ({placeholders})",
         rows
@@ -90,6 +91,10 @@ def load_to_snowflake(cdc_data: pl.DataFrame) -> None:
     logger.info(f"Successfully loaded {len(cdc_data)} rows to raw.cdc_data")
 
 
-if __name__ == "__main__":
+def main():
     cdc_data = fetch_cdc_data()
     load_to_snowflake(cdc_data)
+
+
+if __name__ == "__main__":
+    main()

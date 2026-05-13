@@ -38,7 +38,6 @@ def fetch_census_data():
     response.raise_for_status()
 
     data = response.json()
-
     headers = data[0]
     rows = data[1:]
 
@@ -47,6 +46,7 @@ def fetch_census_data():
     logger.info(f"Successfully fetched {len(census_data)} rows from Census ACS API")
 
     return census_data
+
 
 def load_to_snowflake(census: pl.DataFrame) -> None:
     logger.info("Connecting to Snowflake...")
@@ -64,7 +64,6 @@ def load_to_snowflake(census: pl.DataFrame) -> None:
     cursor = conn.cursor()
 
     logger.info("Creating table if not exists...")
-
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS raw.census_acs (
             B17001_001E STRING,
@@ -78,11 +77,9 @@ def load_to_snowflake(census: pl.DataFrame) -> None:
     """)
 
     logger.info("Truncating existing data in raw.census_acs...")
-
     cursor.execute("TRUNCATE TABLE raw.census_acs")
 
     logger.info("Inserting new data into raw.census_acs...")
-    
     rows = census.rows()
     cursor.executemany(
         "INSERT INTO raw.census_acs VALUES (%s, %s, %s, %s, %s, %s, %s)",
@@ -95,6 +92,11 @@ def load_to_snowflake(census: pl.DataFrame) -> None:
 
     logger.info(f"Successfully loaded {len(census)} rows into Snowflake")
 
-if __name__ == "__main__":
+
+def main():
     census_data = fetch_census_data()
     load_to_snowflake(census_data)
+
+
+if __name__ == "__main__":
+    main()

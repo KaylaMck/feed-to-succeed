@@ -1,0 +1,23 @@
+services:
+  airflow:
+    build: .
+    command: standalone
+    ports:
+      - "8080:8080"
+    env_file: .env
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+      - PYTHONPATH=/opt/airflow/workspace
+      - AIRFLOW__CORE__TEST_CONNECTION=Enabled
+    volumes:
+      - .:/opt/airflow/workspace
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./nutrition_pipeline:/opt/airflow/nutrition_pipeline
+      - ./ingestion:/opt/airflow/ingestion
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/api/v2/version"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s

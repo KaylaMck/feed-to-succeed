@@ -13,6 +13,7 @@ S3_BUCKET = os.getenv("S3_BUCKET")
 NSLP_KEY = os.getenv("S3_NSLP_KEY")
 SBP_KEY = os.getenv("S3_SBP_KEY")
 
+
 def fetch_usda_data(s3_key: str, program_name: str) -> pl.DataFrame:
     logger.info(f"Fetching {program_name} data from S3...")
 
@@ -27,6 +28,7 @@ def fetch_usda_data(s3_key: str, program_name: str) -> pl.DataFrame:
     logger.info(f"Successfully fetched {len(program_data)} rows for {program_name} from S3")
 
     return program_data
+
 
 def load_to_snowflake(program_data: pl.DataFrame, table_name: str) -> None:
     logger.info("Connecting to Snowflake...")
@@ -46,18 +48,15 @@ def load_to_snowflake(program_data: pl.DataFrame, table_name: str) -> None:
     columns = ", ".join([f'"{col}" STRING' for col in program_data.columns])
 
     logger.info("Creating table if not exists...")
-
     cursor.execute(f"CREATE TABLE IF NOT EXISTS raw.{table_name} ({columns})")
 
     logger.info(f"Truncating existing data in raw.{table_name}...")
-
     cursor.execute(f"TRUNCATE TABLE raw.{table_name}")
-
-    logger.info(f"Loading {len(program_data)} row into Snowflake...")
 
     placeholders = ", ".join(["%s"] * len(program_data.columns))
     rows = program_data.rows()
 
+    logger.info(f"Loading {len(program_data)} rows into Snowflake...")
     cursor.executemany(
         f'INSERT INTO raw.{table_name} VALUES ({placeholders})',
         rows
@@ -69,9 +68,14 @@ def load_to_snowflake(program_data: pl.DataFrame, table_name: str) -> None:
 
     logger.info(f"Successfully loaded {len(program_data)} rows to raw.{table_name}")
 
-if __name__ == "__main__":
+
+def main():
     nslp_data = fetch_usda_data(NSLP_KEY, "NSLP")
     load_to_snowflake(nslp_data, "nslp_participation")
 
     sbp_data = fetch_usda_data(SBP_KEY, "SBP")
     load_to_snowflake(sbp_data, "sbp_participation")
+
+
+if __name__ == "__main__":
+    main()

@@ -38,6 +38,7 @@ READING_PARAMS = {
     "Year": "2019,2022,2024",
 }
 
+
 def fetch_nces_data(params: dict, subject_name: str) -> pl.DataFrame:
     logger.info(f"Fetching NCES {subject_name} data...")
 
@@ -53,8 +54,9 @@ def fetch_nces_data(params: dict, subject_name: str) -> pl.DataFrame:
 
     return nces_data
 
+
 def load_to_snowflake(nces_data: pl.DataFrame, table_name: str) -> None:
-    logger.info(f"Connecting to Snowflake...")
+    logger.info("Connecting to Snowflake...")
 
     conn = connect(
         account=os.getenv("SNOWFLAKE_ACCOUNT"),
@@ -91,9 +93,14 @@ def load_to_snowflake(nces_data: pl.DataFrame, table_name: str) -> None:
 
     logger.info(f"Successfully loaded {len(nces_data)} rows to raw.{table_name}")
 
-if __name__ == "__main__":
+
+def main():
     math_data = fetch_nces_data(MATH_PARAMS, "mathematics")
     load_to_snowflake(math_data, "nces_math")
 
     reading_data = fetch_nces_data(READING_PARAMS, "reading")
     load_to_snowflake(reading_data, "nces_reading")
+
+
+if __name__ == "__main__":
+    main()
