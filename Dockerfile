@@ -6,6 +6,7 @@ RUN pip install --no-cache-dir \
     astronomer-cosmos \
     requests \
     polars \
+    fastexcel \
     loguru \
     python-dotenv \
     boto3
