@@ -10,7 +10,8 @@ renamed as (
         cast(B01003_001E as integer)            as total_population,
         cast(B03002_003E as integer)            as white_population,
         cast(B03002_004E as integer)            as black_population,
-        cast(B03002_012E as integer)            as hispanic_population
+        cast(B03002_012E as integer)            as hispanic_population,
+        cast(B09001_001E as integer)            as school_age_population
     from source
 )
 

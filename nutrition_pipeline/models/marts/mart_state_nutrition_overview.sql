@@ -24,11 +24,11 @@ final as (
         d.total_population,
         d.poverty_rate,
         round(
-            n.nslp_participation_2024 / nullif(d.total_population, 0) * 100, 2
+            n.nslp_participation_2024 / nullif(d.school_age_population, 0) * 100, 2
         )                                                               as nslp_participation_rate,
         round(
-            n.sbp_participation_2024 / nullif(d.total_population, 0) * 100, 2
-        )                                                               as sbp_participation_rate,
+            n.sbp_participation_2024 / nullif(d.school_age_population, 0) * 100, 2
+        )                                                               as sbp_participation_rate
     from crosswalk cw
     left join nutrition n on cw.state_name = n.state_name
     left join demographics d on cw.state_fips = d.state_fips

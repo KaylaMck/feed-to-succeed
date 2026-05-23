@@ -11,6 +11,7 @@ calculated as (
         white_population,
         black_population,
         hispanic_population,
+        school_age_population,
         round(
             below_poverty_population / nullif(poverty_population_evaluated, 0) * 100, 2
         )                                                                                       as poverty_rate,
@@ -19,7 +20,9 @@ calculated as (
         round
             (black_population/ nullif(total_population, 0) * 100, 2)                            as pct_black,
         round
-            (hispanic_population / nullif(total_population, 0) * 100, 2)                        as pct_hispanic
+            (hispanic_population / nullif(total_population, 0) * 100, 2)                        as pct_hispanic,
+        round
+            (school_age_population / nullif(total_population, 0) * 100, 2)                      as pct_school_age
     from census
 )
 
