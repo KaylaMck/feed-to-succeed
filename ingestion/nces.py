@@ -8,6 +8,8 @@ from snowflake.connector import connect
 
 load_dotenv()
 
+logger.add("ingestion/logs/nces.log", rotation="1 week", retention="1 month")
+
 BASE_URL = "https://www.nationsreportcard.gov/Dataservice/GetAdhocData.aspx"
 
 ALL_STATES = (

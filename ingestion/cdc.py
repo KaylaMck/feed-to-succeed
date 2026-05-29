@@ -8,6 +8,8 @@ from snowflake.connector import connect
 
 load_dotenv()
 
+logger.add("ingestion/logs/cdc.log", rotation="1 week", retention="1 month")
+
 BASE_URL = "https://chronicdata.cdc.gov/resource/vba9-s8jp.json"
 
 

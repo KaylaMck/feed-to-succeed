@@ -8,6 +8,8 @@ from snowflake.connector import connect
 
 load_dotenv()
 
+logger.add("ingestion/logs/census.log", rotation="1 week", retention="1 month")
+
 API_KEY = os.getenv("CENSUS_API_KEY")
 BASE_URL = "https://api.census.gov/data/2023/acs/acs5"
 
@@ -18,6 +20,7 @@ VARIABLES = {
     "B03002_003E": "white_alone",
     "B03002_004E": "black_alone",
     "B03002_012E": "hispanic_latino",
+    "B09001_001E": "population_under_18"
 }
 
 
@@ -72,6 +75,7 @@ def load_to_snowflake(census: pl.DataFrame) -> None:
             B03002_003E STRING,
             B03002_004E STRING,
             B03002_012E STRING,
+            B09001_001E STRING,
             state STRING
         )
     """)
@@ -82,7 +86,7 @@ def load_to_snowflake(census: pl.DataFrame) -> None:
     logger.info("Inserting new data into raw.census_acs...")
     rows = census.rows()
     cursor.executemany(
-        "INSERT INTO raw.census_acs VALUES (%s, %s, %s, %s, %s, %s, %s)",
+        "INSERT INTO raw.census_acs VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
         rows
     )
 

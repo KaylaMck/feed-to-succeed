@@ -220,3 +220,4 @@ __marimo__/
 __queuestorage__
 
 logs/
+ingestion/logs/

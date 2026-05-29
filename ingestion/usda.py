@@ -9,6 +9,8 @@ from snowflake.connector import connect
 
 load_dotenv()
 
+logger.add("ingestion/logs/usda.log", rotation="1 week", retention="1 month")
+
 S3_BUCKET = os.getenv("S3_BUCKET")
 NSLP_KEY = os.getenv("S3_NSLP_KEY")
 SBP_KEY = os.getenv("S3_SBP_KEY")
